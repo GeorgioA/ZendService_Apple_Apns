@@ -300,7 +300,7 @@ class Message
         $payload = $this->getPayload();
         // don't escape utf8 payloads unless json_encode does not exist.
         if (defined('JSON_UNESCAPED_UNICODE') && function_exists('mb_strlen')) {
-            $payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
+            $payload = json_encode($payload);
             $length = mb_strlen($payload, 'UTF-8');
         } else {
             $payload = JsonEncoder::encode($payload);
