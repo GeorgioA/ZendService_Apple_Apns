@@ -36,11 +36,14 @@ class Message extends AbstractClient
 
     /**
      * Send Message
-     *
+     * 
+     * 
      * @param  ZendService\Apple\Apns\Message          $message
-     * @return ZendService\Apple\Apns\Response\Message
+     * @param int $waitTime in microseconds. The time during the script stops before reading response sent back by Apple serveurs
+     * @throws Exception\RuntimeException
+     * @return \ZendService\Apple\Apns\Response\Message
      */
-    public function send(ApnsMessage $message)
+    public function send(ApnsMessage $message, $waitTime = 0)
     {
         if (!$this->isConnected()) {
             throw new Exception\RuntimeException('You must first open the connection by calling open()');
@@ -51,6 +54,10 @@ class Message extends AbstractClient
             throw new Exception\RuntimeException('Server is unavailable; please retry later');
         }
 
+        if($waitTime > 0){
+            usleep($waitTime);
+        }
+        
         return new MessageResponse($this->read());
     }
 }
