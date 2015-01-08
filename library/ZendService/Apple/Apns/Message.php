@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  * @package   Zend_Service
  */
@@ -273,18 +273,21 @@ class Message
     public function getPayload()
     {
         $message = array();
-        $message['aps'] = array();
+        $aps = array();
         if ($this->alert && ($alert = $this->alert->getPayload())) {
-            $message['aps']['alert'] = $alert;
+            $aps['alert'] = $alert;
         }
         if (!is_null($this->badge)) {
-            $message['aps']['badge'] = $this->badge;
+            $aps['badge'] = $this->badge;
         }
         if (!is_null($this->sound)) {
-            $message['aps']['sound'] = $this->sound;
+            $aps['sound'] = $this->sound;
         }
         if (!empty($this->custom)) {
             $message = array_merge($this->custom, $message);
+        }
+        if (!empty($aps)) {
+            $message['aps'] = $aps;
         }
 
         return $message;
